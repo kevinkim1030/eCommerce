@@ -13,6 +13,7 @@ const {
   listBySearch,
   photo
 } = require('../controllers/product');
+
 const { requireSignin, isAuth, isAdmin } = require('../controllers/auth');
 const { userById } = require('../controllers/user');
 

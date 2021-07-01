@@ -6,7 +6,9 @@ const { errorHandler } = require('../helpers/dbErrorHandler');
 
 
 exports.productById = (req, res, next, id) => {
-  Product.findById(id).exec((err, product) => {
+  Product.findById(id)
+  .populate('category')
+  .exec((err, product) => {
     if(err || !product) {
       return res.status(400).json({
         error: 'Product not found'
@@ -184,9 +186,9 @@ exports.listCategories = (req,res) => {
  * we will make api request and show the products to users based on what he wants
  */
  
-exports.listBySearch = (req, res) => {
-  let order = req.body.order ? req.body.order : "desc";
-  let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
+ exports.listBySearch = (req, res) => {
+  let order = req.body.order ? req.body.order : 'desc';
+  let sortBy = req.body.sortBy ? req.body.sortBy : '_id';
   let limit = req.body.limit ? parseInt(req.body.limit) : 100;
   let skip = parseInt(req.body.skip);
   let findArgs = {};
@@ -243,7 +245,7 @@ exports.listSearch = ( req, res, ) => {
   if(req.query.search) {
     query.name = {$regex: req.query.search, $options: 'i'}
     // assign category value to query.category
-    if(req.query.category && req.query.category !== 'All') {
+    if(req.query.category && req.query.category != 'All') {
       query.category = req.query.category
     }
     // find the products based on query object with 2 properties
